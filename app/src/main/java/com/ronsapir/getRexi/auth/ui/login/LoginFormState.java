@@ -5,20 +5,21 @@ import androidx.annotation.Nullable;
 /**
  * Data validation state of the login form.
  */
-class LoginFormState {
+public class LoginFormState {
     @Nullable
-    private Integer emailError;
+    protected Integer emailError;
     @Nullable
-    private Integer passwordError;
-    private boolean isDataValid;
+    protected Integer passwordError;
 
-    LoginFormState(@Nullable Integer emailError, @Nullable Integer passwordError) {
+    protected boolean isDataValid;
+
+    protected LoginFormState(@Nullable Integer emailError, @Nullable Integer passwordError) {
         this.emailError = emailError;
         this.passwordError = passwordError;
         this.isDataValid = false;
     }
 
-    LoginFormState(boolean isDataValid) {
+    protected LoginFormState(boolean isDataValid) {
         this.emailError = null;
         this.passwordError = null;
         this.isDataValid = isDataValid;

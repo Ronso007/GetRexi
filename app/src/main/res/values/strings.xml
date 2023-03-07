@@ -12,9 +12,13 @@
     <string name="welcome">"Welcome!"</string>
     <string name="invalid_email">Not a valid email</string>
     <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
+    <string name="invalid_name">Name must be >3 characters</string>
     <string name="EmailLabel">Email</string>
     <string name="PasswordLabel">Password</string>
     <string name="nameLabel">Name</string>
     <string name="title_activity_register">RegisterActivity</string>
+
+    // Auth
+    <string name="login_failed">"Login failed"</string>
+    <string name="register_failed">"Register failed"</string>
 </resources>

@@ -1,17 +1,7 @@
-package com.ronsapir.getRexi.auth.ui.login;
+package com.ronsapir.getRexi.auth.ui.register;
 
 import android.app.Activity;
-
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -23,12 +13,20 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.ronsapir.getRexi.R;
+import com.ronsapir.getRexi.auth.ui.login.LoggedInUserView;
 import com.ronsapir.getRexi.databinding.ActivityRegisterBinding;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private LoginViewModel loginViewModel;
+    private RegisterViewModel registerViewModel;
     private ActivityRegisterBinding binding;
 
     @Override
@@ -38,8 +36,8 @@ public class RegisterActivity extends AppCompatActivity {
         binding = ActivityRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        loginViewModel = new ViewModelProvider(this, new RegisterViewModelFactory())
-                .get(LoginViewModel.class);
+        registerViewModel = new ViewModelProvider(this, new RegisterViewModelFactory())
+                .get(RegisterViewModel.class);
 
         final EditText emailEditText = binding.email;
         final EditText passwordEditText = binding.password;
@@ -48,34 +46,37 @@ public class RegisterActivity extends AppCompatActivity {
         final Button loginButton = binding.registerButton;
         final ProgressBar loadingProgressBar = binding.loading;
 
-        loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
+        registerViewModel.getRegisterFormState().observe(this, new Observer<RegisterFormState>() {
             @Override
-            public void onChanged(@Nullable LoginFormState loginFormState) {
-                if (loginFormState == null) {
+            public void onChanged(@Nullable RegisterFormState registerFormState) {
+                if (registerFormState == null) {
                     return;
                 }
-                loginButton.setEnabled(loginFormState.isDataValid());
-                if (loginFormState.getUsernameError() != null) {
-                    emailEditText.setError(getString(loginFormState.getUsernameError()));
+                loginButton.setEnabled(registerFormState.isDataValid());
+                if (registerFormState.getUsernameError() != null) {
+                    emailEditText.setError(getString(registerFormState.getUsernameError()));
                 }
-                if (loginFormState.getPasswordError() != null) {
-                    passwordEditText.setError(getString(loginFormState.getPasswordError()));
+                if (registerFormState.getPasswordError() != null) {
+                    passwordEditText.setError(getString(registerFormState.getPasswordError()));
+                }
+                if (registerFormState.getNameError() != null) {
+                    nameEditText.setError(getString(registerFormState.getNameError()));
                 }
             }
         });
 
-        loginViewModel.getLoginResult().observe(this, new Observer<LoginResult>() {
+        registerViewModel.getRegisterResult().observe(this, new Observer<RegisterResult>() {
             @Override
-            public void onChanged(@Nullable LoginResult loginResult) {
-                if (loginResult == null) {
+            public void onChanged(@Nullable RegisterResult registerResult) {
+                if (registerResult == null) {
                     return;
                 }
                 loadingProgressBar.setVisibility(View.GONE);
-                if (loginResult.getError() != null) {
-                    showLoginFailed(loginResult.getError());
+                if (registerResult.getError() != null) {
+                    showRegisterFailed(registerResult.getError());
                 }
-                if (loginResult.getSuccess() != null) {
-                    updateUiWithUser(loginResult.getSuccess());
+                if (registerResult.getSuccess() != null) {
+                    updateUiWithUser(registerResult.getSuccess());
                 }
                 setResult(Activity.RESULT_OK);
 
@@ -97,19 +98,21 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                loginViewModel.loginDataChanged(emailEditText.getText().toString(),
-                        passwordEditText.getText().toString());
+                registerViewModel.registerDataChanged(emailEditText.getText().toString(),
+                                                      passwordEditText.getText().toString(),
+                                                      nameEditText.getText().toString());
             }
         };
         emailEditText.addTextChangedListener(afterTextChangedListener);
         passwordEditText.addTextChangedListener(afterTextChangedListener);
+        nameEditText.addTextChangedListener(afterTextChangedListener);
         passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    loginViewModel.login(emailEditText.getText().toString(),
-                            passwordEditText.getText().toString());
+                    registerViewModel.register(emailEditText.getText().toString(),
+                            passwordEditText.getText().toString(), nameEditText.getText().toString());
                 }
                 return false;
             }
@@ -119,8 +122,8 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadingProgressBar.setVisibility(View.VISIBLE);
-                loginViewModel.login(emailEditText.getText().toString(),
-                        passwordEditText.getText().toString());
+                registerViewModel.register(emailEditText.getText().toString(),
+                        passwordEditText.getText().toString(), nameEditText.getText().toString());
             }
         });
     }
@@ -131,7 +134,7 @@ public class RegisterActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
 
-    private void showLoginFailed(@StringRes Integer errorString) {
+    private void showRegisterFailed(@StringRes Integer errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
     }
 }
