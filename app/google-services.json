@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "472166919195",
+    "project_id": "getrexi",
+    "storage_bucket": "getrexi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:472166919195:android:33950bd185072db3155cbe",
+        "android_client_info": {
+          "package_name": "com.ronsapir.getRexi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "472166919195-342qt0r6cr0gvul7mljnl4ukta5lb991.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCD3p4_seD8l_953L46KhRvDScbQ9E9K84"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "472166919195-342qt0r6cr0gvul7mljnl4ukta5lb991.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

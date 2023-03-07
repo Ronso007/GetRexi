@@ -1,17 +1,17 @@
-package com.ronsapir.getRexi.ui.register.ui.login;
+package com.ronsapir.getRexi.auth.ui.login;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.annotation.NonNull;
 
-import com.ronsapir.getRexi.ui.register.data.LoginDataSource;
-import com.ronsapir.getRexi.ui.register.data.LoginRepository;
+import com.ronsapir.getRexi.auth.data.LoginDataSource;
+import com.ronsapir.getRexi.auth.data.LoginRepository;
 
 /**
  * ViewModel provider factory to instantiate LoginViewModel.
  * Required given LoginViewModel has a non-empty constructor
  */
-public class LoginViewModelFactory implements ViewModelProvider.Factory {
+public class RegisterViewModelFactory implements ViewModelProvider.Factory {
 
     @NonNull
     @Override

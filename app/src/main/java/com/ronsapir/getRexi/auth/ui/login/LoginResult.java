@@ -1,4 +1,4 @@
-package com.ronsapir.getRexi.ui.register.ui.login;
+package com.ronsapir.getRexi.auth.ui.login;
 
 import androidx.annotation.Nullable;
 

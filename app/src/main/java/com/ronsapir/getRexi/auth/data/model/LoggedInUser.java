@@ -1,4 +1,4 @@
-package com.ronsapir.getRexi.ui.register.data.model;
+package com.ronsapir.getRexi.auth.data.model;
 
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository

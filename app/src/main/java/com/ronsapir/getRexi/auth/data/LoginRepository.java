@@ -1,6 +1,6 @@
-package com.ronsapir.getRexi.ui.register.data;
+package com.ronsapir.getRexi.auth.data;
 
-import com.ronsapir.getRexi.ui.register.data.model.LoggedInUser;
+import com.ronsapir.getRexi.auth.data.model.LoggedInUser;
 
 /**
  * Class that requests authentication and user information from the remote data source and

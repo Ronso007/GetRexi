@@ -1,4 +1,4 @@
-package com.ronsapir.getRexi.ui.register.data;
+package com.ronsapir.getRexi.auth.data;
 
 /**
  * A generic class that holds a result success w/ data or an error exception.

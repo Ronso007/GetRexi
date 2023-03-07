@@ -1,4 +1,4 @@
-package com.ronsapir.getRexi.ui.register.ui.login;
+package com.ronsapir.getRexi.auth.ui.login;
 
 /**
  * Class exposing authenticated user details to the UI.
