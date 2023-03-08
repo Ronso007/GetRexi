@@ -1,9 +1,9 @@
 package com.ronsapir.getRexi.auth.data;
 
-import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -11,7 +11,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.ronsapir.getRexi.R;
 import com.ronsapir.getRexi.auth.data.model.LoggedInUser;
+import com.ronsapir.getRexi.auth.ui.login.LoggedInUserView;
+import com.ronsapir.getRexi.auth.ui.register.RegisterResult;
 
 import java.io.IOException;
 
@@ -22,29 +25,30 @@ public class AuthDataSource {
 
     private FirebaseAuth mAuth;
     private String Tag = "Auth";
-    public Result<LoggedInUser> register(String email, String password, String name) {
+    public void register(String email, String password, String name, MutableLiveData<RegisterResult> registerResult) {
         mAuth = FirebaseAuth.getInstance();
         LoggedInUser User;
         try {
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(Tag, "signInWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUsername(user,name, registerResult);
 
-            mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(authTask -> {
-                        if (authTask.isSuccessful()) {
-                            Log.d("@@@@@@@@",mAuth.getCurrentUser().getUid());
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(Tag, "signInWithEmail:failure", task.getException());
+                            registerResult.setValue(new RegisterResult(R.string.register_failed));
                         }
-                    });
+                    }
+                });
 
-            FirebaseUser user = mAuth.getCurrentUser();
-            if (user != null) {
-                updateUsername(user,name);
-                User = new LoggedInUser(
-                                user.getUid(),
-                                name);
-                return new Result.Success<>(User);
-            }
-            return new Result.Error(new IOException("Error logging in"));
         } catch (Exception e) {
-            return new Result.Error(new IOException("Error logging in", e));
+
         }
     }
 
@@ -61,7 +65,7 @@ public class AuthDataSource {
         mAuth.signOut();
     }
 
-    private void updateUsername(FirebaseUser user, String name) {
+    private void updateUsername(FirebaseUser user, String name, MutableLiveData<RegisterResult> registerResult) {
         try {
             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                     .setDisplayName(name)
@@ -71,8 +75,12 @@ public class AuthDataSource {
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
+
                             if (task.isSuccessful()) {
                                 Log.d(Tag, "User profile updated.");
+                                registerResult.setValue(new RegisterResult(new LoggedInUserView(name)));
+                            } else {
+                                registerResult.setValue(new RegisterResult(R.string.register_failed));
                             }
                         }
                     });

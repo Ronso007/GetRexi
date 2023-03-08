@@ -16,10 +16,10 @@ public class RegisterViewModel extends ViewModel {
 
     private MutableLiveData<RegisterFormState> registerFormState = new MutableLiveData<>();
     private MutableLiveData<RegisterResult> registerResult = new MutableLiveData<>();
-    private AuthRepository loginRepository;
+    private AuthRepository registerRepository;
 
     RegisterViewModel(AuthRepository loginRepository) {
-        this.loginRepository = loginRepository;
+        this.registerRepository = loginRepository;
     }
 
     LiveData<RegisterFormState> getRegisterFormState() {
@@ -32,14 +32,7 @@ public class RegisterViewModel extends ViewModel {
 
     public void register(String email, String password, String name) {
         // can be launched in a separate asynchronous job
-        Result<LoggedInUser> result = loginRepository.register(email, password,name);
-
-        if (result instanceof Result.Success) {
-            LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
-            registerResult.setValue(new RegisterResult(new LoggedInUserView(data.getDisplayName())));
-        } else {
-            registerResult.setValue(new RegisterResult(R.string.register_failed));
-        }
+        registerRepository.register(email, password,name, registerResult);
     }
 
     public void registerDataChanged(String email, String password, String name) {

@@ -1,6 +1,9 @@
 package com.ronsapir.getRexi.auth.data;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.ronsapir.getRexi.auth.data.model.LoggedInUser;
+import com.ronsapir.getRexi.auth.ui.register.RegisterResult;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -52,12 +55,8 @@ public class AuthRepository {
         return result;
     }
 
-    public Result<LoggedInUser> register(String username, String password, String name) {
+    public void register(String username, String password, String name, MutableLiveData<RegisterResult> registerResult) {
         // handle login
-        Result<LoggedInUser> result = dataSource.register(username, password,name);
-        if (result instanceof Result.Success) {
-            setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
-        }
-        return result;
+        dataSource.register(username, password,name, registerResult);
     }
 }
