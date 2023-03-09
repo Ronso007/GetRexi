@@ -1,16 +1,13 @@
 package com.ronsapir.getRexi.auth.ui.register;
 
+import android.util.Patterns;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import android.util.Patterns;
-
-import com.ronsapir.getRexi.auth.data.AuthRepository;
-import com.ronsapir.getRexi.auth.data.Result;
-import com.ronsapir.getRexi.auth.data.model.LoggedInUser;
 import com.ronsapir.getRexi.R;
-import com.ronsapir.getRexi.auth.ui.login.LoggedInUserView;
+import com.ronsapir.getRexi.auth.data.AuthRepository;
 
 public class RegisterViewModel extends ViewModel {
 
@@ -18,8 +15,8 @@ public class RegisterViewModel extends ViewModel {
     private MutableLiveData<RegisterResult> registerResult = new MutableLiveData<>();
     private AuthRepository registerRepository;
 
-    RegisterViewModel(AuthRepository loginRepository) {
-        this.registerRepository = loginRepository;
+    RegisterViewModel(AuthRepository registerRepository) {
+        this.registerRepository = registerRepository;
     }
 
     LiveData<RegisterFormState> getRegisterFormState() {

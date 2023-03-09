@@ -34,4 +34,10 @@
         <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline</item>
 
     </style>
+    <style name="Theme.GetRexi.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.GetRexi.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.GetRexi.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

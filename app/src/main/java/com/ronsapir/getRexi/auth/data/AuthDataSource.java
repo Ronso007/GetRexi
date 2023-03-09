@@ -14,6 +14,7 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.ronsapir.getRexi.R;
 import com.ronsapir.getRexi.auth.data.model.LoggedInUser;
 import com.ronsapir.getRexi.auth.ui.login.LoggedInUserView;
+import com.ronsapir.getRexi.auth.ui.login.LoginResult;
 import com.ronsapir.getRexi.auth.ui.register.RegisterResult;
 
 import java.io.IOException;
@@ -52,9 +53,24 @@ public class AuthDataSource {
         }
     }
 
-    public Result<LoggedInUser> login(String email, String password) {
+    public Result<LoggedInUser> login(String email, String password, MutableLiveData<LoginResult> loginResult) {
         mAuth = FirebaseAuth.getInstance();
-
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(Tag, "signInWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            loginResult.setValue(new LoginResult(new LoggedInUserView(user.getDisplayName())));
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(Tag, "signInWithEmail:failure", task.getException());
+                            loginResult.setValue(new LoginResult(R.string.login_failed));
+                        }
+                    }
+                });
         try {
             return new Result.Error(new IOException("Error logging in"));
         } catch (Exception e) {
@@ -88,5 +104,9 @@ public class AuthDataSource {
         } catch (Exception e) {
             Log.w(Tag, "updateProfile:failure", e);
         }
+    }
+
+    public boolean isLoggedIn() {
+        return mAuth.getCurrentUser() != null;
     }
 }

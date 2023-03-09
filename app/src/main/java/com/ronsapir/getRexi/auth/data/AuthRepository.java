@@ -3,6 +3,7 @@ package com.ronsapir.getRexi.auth.data;
 import androidx.lifecycle.MutableLiveData;
 
 import com.ronsapir.getRexi.auth.data.model.LoggedInUser;
+import com.ronsapir.getRexi.auth.ui.login.LoginResult;
 import com.ronsapir.getRexi.auth.ui.register.RegisterResult;
 
 /**
@@ -32,7 +33,7 @@ public class AuthRepository {
     }
 
     public boolean isLoggedIn() {
-        return user != null;
+        return dataSource.isLoggedIn();
     }
 
     public void logout() {
@@ -42,17 +43,11 @@ public class AuthRepository {
 
     private void setLoggedInUser(LoggedInUser user) {
         this.user = user;
-        // If user credentials will be cached in local storage, it is recommended it be encrypted
-        // @see https://developer.android.com/training/articles/keystore
     }
 
-    public Result<LoggedInUser> login(String username, String password) {
+    public void login(String username, String password, MutableLiveData<LoginResult> loginResult) {
         // handle login
-        Result<LoggedInUser> result = dataSource.login(username, password);
-        if (result instanceof Result.Success) {
-            setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
-        }
-        return result;
+        dataSource.login(username, password, loginResult);
     }
 
     public void register(String username, String password, String name, MutableLiveData<RegisterResult> registerResult) {

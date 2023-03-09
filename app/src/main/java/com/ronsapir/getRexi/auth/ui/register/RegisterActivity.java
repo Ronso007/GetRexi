@@ -43,7 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
         final EditText passwordEditText = binding.password;
         final EditText nameEditText = binding.username;
         final SwitchCompat switchCompat = binding.VerifiedSwitch;
-        final Button loginButton = binding.registerButton;
+        final Button registerButton = binding.registerButton;
         final ProgressBar loadingProgressBar = binding.loading;
 
         registerViewModel.getRegisterFormState().observe(this, new Observer<RegisterFormState>() {
@@ -52,7 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if (registerFormState == null) {
                     return;
                 }
-                loginButton.setEnabled(registerFormState.isDataValid());
+                registerButton.setEnabled(registerFormState.isDataValid());
                 if (registerFormState.getUsernameError() != null) {
                     emailEditText.setError(getString(registerFormState.getUsernameError()));
                 }
@@ -118,7 +118,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loadingProgressBar.setVisibility(View.VISIBLE);
@@ -129,7 +129,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void updateUiWithUser(LoggedInUserView model) {
-        String welcome = getString(R.string.welcome) + model.getDisplayName();
+        String welcome = getString(R.string.welcome) + " " + model.getDisplayName();
         // TODO : initiate successful logged in experience
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }

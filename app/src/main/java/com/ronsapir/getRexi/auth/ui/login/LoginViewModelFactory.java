@@ -1,4 +1,4 @@
-package com.ronsapir.getRexi.auth.ui.register;
+package com.ronsapir.getRexi.auth.ui.login;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -8,17 +8,17 @@ import com.ronsapir.getRexi.auth.data.AuthDataSource;
 import com.ronsapir.getRexi.auth.data.AuthRepository;
 
 /**
- * ViewModel provider factory to instantiate RegisterViewModel.
- * Required given RegisterViewModel has a non-empty constructor
+ * ViewModel provider factory to instantiate LoginViewModel.
+ * Required given LoginViewModel has a non-empty constructor
  */
-public class RegisterViewModelFactory implements ViewModelProvider.Factory {
+public class LoginViewModelFactory implements ViewModelProvider.Factory {
 
     @NonNull
     @Override
     @SuppressWarnings("unchecked")
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(RegisterViewModel.class)) {
-            return (T) new RegisterViewModel(AuthRepository.getInstance(new AuthDataSource()));
+        if (modelClass.isAssignableFrom(LoginViewModel.class)) {
+            return (T) new LoginViewModel(AuthRepository.getInstance(new AuthDataSource()));
         } else {
             throw new IllegalArgumentException("Unknown ViewModel class");
         }
