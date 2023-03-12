@@ -1,6 +1,8 @@
 package com.ronsapir.getRexi.auth.ui.register;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,10 +11,14 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +35,10 @@ public class RegisterActivity extends AppCompatActivity {
     private RegisterViewModel registerViewModel;
     private ActivityRegisterBinding binding;
 
+    private ActivityResultLauncher<Void> cameraLauncher;
+    private ActivityResultLauncher<String> galleryLauncher;
+    private Boolean isImageSelected = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +52,8 @@ public class RegisterActivity extends AppCompatActivity {
         final EditText emailEditText = binding.email;
         final EditText passwordEditText = binding.password;
         final EditText nameEditText = binding.username;
-        final SwitchCompat switchCompat = binding.VerifiedSwitch;
+        final EditText phoneEditText = binding.phone;
+        final SwitchCompat verifiedSwitch = binding.VerifiedSwitch;
         final Button registerButton = binding.registerButton;
         final ProgressBar loadingProgressBar = binding.loading;
 
@@ -61,6 +72,9 @@ public class RegisterActivity extends AppCompatActivity {
                 }
                 if (registerFormState.getNameError() != null) {
                     nameEditText.setError(getString(registerFormState.getNameError()));
+                }
+                if (registerFormState.getPhoneError() != null) {
+                    phoneEditText.setError(getString(registerFormState.getPhoneError()));
                 }
             }
         });
@@ -100,19 +114,30 @@ public class RegisterActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 registerViewModel.registerDataChanged(emailEditText.getText().toString(),
                                                       passwordEditText.getText().toString(),
-                                                      nameEditText.getText().toString());
+                                                      nameEditText.getText().toString(),
+                                                      phoneEditText.getText().toString());
             }
         };
         emailEditText.addTextChangedListener(afterTextChangedListener);
         passwordEditText.addTextChangedListener(afterTextChangedListener);
         nameEditText.addTextChangedListener(afterTextChangedListener);
+        phoneEditText.addTextChangedListener(afterTextChangedListener);
         passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    ImageView image = null;
+                    if (isImageSelected) {
+                        image = binding.userImg;
+                    }
+
                     registerViewModel.register(emailEditText.getText().toString(),
-                            passwordEditText.getText().toString(), nameEditText.getText().toString());
+                            passwordEditText.getText().toString(),
+                            nameEditText.getText().toString(),
+                            phoneEditText.getText().toString(),
+                            verifiedSwitch.isChecked(),
+                            image);
                 }
                 return false;
             }
@@ -121,13 +146,56 @@ public class RegisterActivity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ImageView image = null;
+                if (isImageSelected) {
+                    image = binding.userImg;
+                }
+
                 loadingProgressBar.setVisibility(View.VISIBLE);
                 registerViewModel.register(emailEditText.getText().toString(),
-                        passwordEditText.getText().toString(), nameEditText.getText().toString());
+                        passwordEditText.getText().toString(),
+                        nameEditText.getText().toString(),
+                        phoneEditText.getText().toString(),
+                        verifiedSwitch.isChecked(),
+                        image);
             }
+        });
+
+        cameraLauncher = registerForActivityResult(new ActivityResultContracts.TakePicturePreview(), new ActivityResultCallback<Bitmap>() {
+            @Override
+            public void onActivityResult(Bitmap result) {
+                if (result != null) {
+                    binding.userImg.setImageBitmap(result);
+                    isImageSelected = true;
+                }
+            }
+        });
+
+        galleryLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
+            @Override
+            public void onActivityResult(Uri result) {
+                if (result != null){
+                    binding.userImg.setImageURI(result);
+                    isImageSelected = true;
+                }
+            }
+        });
+
+        setCameraButtonActionListener();
+        setGalleryButtonActionListener();
+    }
+
+    private void setGalleryButtonActionListener() {
+        binding.galleryButton.setOnClickListener(view1->{
+            galleryLauncher.launch("image/*");
         });
     }
 
+    private void setCameraButtonActionListener() {
+        binding.cameraButton.setOnClickListener(view1->{
+            cameraLauncher.launch(null);
+        });
+    }
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + " " + model.getDisplayName();
         // TODO : initiate successful logged in experience

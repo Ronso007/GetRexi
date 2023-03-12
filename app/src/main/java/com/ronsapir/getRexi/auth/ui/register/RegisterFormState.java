@@ -8,9 +8,12 @@ public class RegisterFormState extends LoginFormState {
     @Nullable
     private Integer nameError;
 
-    RegisterFormState(@Nullable Integer emailError, @Nullable Integer passwordError, @Nullable Integer NameError) {
+    private Integer phoneError;
+
+    RegisterFormState(@Nullable Integer emailError, @Nullable Integer passwordError, @Nullable Integer NameError,@Nullable Integer phoneError) {
         super(emailError, passwordError);
         this.nameError = NameError;
+        this.phoneError = phoneError;
     }
 
     RegisterFormState(boolean isDataValid) {
@@ -31,6 +34,11 @@ public class RegisterFormState extends LoginFormState {
     @Nullable
     Integer getNameError() {
         return nameError;
+    }
+
+    @Nullable
+    Integer getPhoneError() {
+        return phoneError;
     }
 
     boolean isDataValid() {

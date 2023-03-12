@@ -50,7 +50,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/side_nav_header"
         app:menu="@menu/side_nav_menu"/>
 
 

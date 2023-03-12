@@ -1,7 +1,9 @@
 package com.ronsapir.getRexi.auth.ui.register;
 
 import android.util.Patterns;
+import android.widget.ImageView;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -27,21 +29,27 @@ public class RegisterViewModel extends ViewModel {
         return registerResult;
     }
 
-    public void register(String email, String password, String name) {
+    public void register(String email, String password, String name, String phone, boolean isVerified,@Nullable ImageView image) {
         // can be launched in a separate asynchronous job
-        registerRepository.register(email, password,name, registerResult);
+        registerRepository.register(email, password,name, phone,isVerified, image, registerResult);
     }
 
-    public void registerDataChanged(String email, String password, String name) {
+    public void registerDataChanged(String email, String password, String name, String phone) {
         if (!isEmailValid(email)) {
-            registerFormState.setValue(new RegisterFormState(R.string.invalid_email, null,null));
+            registerFormState.setValue(new RegisterFormState(R.string.invalid_email, null,null,null));
         } else if (!isPasswordValid(password)) {
-            registerFormState.setValue(new RegisterFormState(null, R.string.invalid_password,null));
+            registerFormState.setValue(new RegisterFormState(null, R.string.invalid_password,null,null));
         } else if (!isNameValid(name)) {
-            registerFormState.setValue(new RegisterFormState(null,null,R.string.invalid_name));
+            registerFormState.setValue(new RegisterFormState(null,null,R.string.invalid_name,null));
+        } else if (!isPhoneValid(phone)) {
+            registerFormState.setValue(new RegisterFormState(null,null,null,R.string.invalid_phone));
         } else {
             registerFormState.setValue(new RegisterFormState(true));
         }
+    }
+
+    private boolean isPhoneValid(String phone) {
+        return phone != null && phone.trim().length() >= 9 && phone.trim().length() <= 10;
     }
 
     private boolean isNameValid(String name) {

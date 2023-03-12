@@ -1,5 +1,7 @@
 package com.ronsapir.getRexi.auth.data;
 
+import android.widget.ImageView;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.ronsapir.getRexi.auth.data.model.LoggedInUser;
@@ -14,18 +16,18 @@ public class AuthRepository {
 
     private static volatile AuthRepository instance;
 
-    private AuthDataSource dataSource;
+    private FirebaseDataSource dataSource;
 
     // If user credentials will be cached in local storage, it is recommended it be encrypted
     // @see https://developer.android.com/training/articles/keystore
     private LoggedInUser user = null;
 
     // private constructor : singleton access
-    private AuthRepository(AuthDataSource dataSource) {
+    private AuthRepository(FirebaseDataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    public static AuthRepository getInstance(AuthDataSource dataSource) {
+    public static AuthRepository getInstance(FirebaseDataSource dataSource) {
         if (instance == null) {
             instance = new AuthRepository(dataSource);
         }
@@ -50,8 +52,10 @@ public class AuthRepository {
         dataSource.login(username, password, loginResult);
     }
 
-    public void register(String username, String password, String name, MutableLiveData<RegisterResult> registerResult) {
+    public void register(String username, String password, String name, String phone, boolean isVerified, ImageView image, MutableLiveData<RegisterResult> registerResult) {
         // handle login
-        dataSource.register(username, password,name, registerResult);
+        dataSource.register(username, password,name, phone,isVerified, image,registerResult);
     }
+
+
 }

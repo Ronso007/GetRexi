@@ -13,9 +13,11 @@
     <string name="invalid_email">Not a valid email</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="invalid_name">Name must be >3 characters</string>
+    <string name="invalid_phone">Phone must be valid</string>
     <string name="EmailLabel">Email</string>
     <string name="PasswordLabel">Password</string>
     <string name="nameLabel">Name</string>
+    <string name="phoneLabel">Phone</string>
     <string name="title_activity_register">RegisterActivity</string>
 
     // Auth
@@ -52,5 +54,6 @@
     <!-- to toggle the open close button of the navigation drawer -->
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>
+    <string name="promt_phone">Phone</string>
 
 </resources>

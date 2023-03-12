@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.annotation.NonNull;
 
-import com.ronsapir.getRexi.auth.data.AuthDataSource;
+import com.ronsapir.getRexi.auth.data.FirebaseDataSource;
 import com.ronsapir.getRexi.auth.data.AuthRepository;
 
 /**
@@ -18,7 +18,7 @@ public class LoginViewModelFactory implements ViewModelProvider.Factory {
     @SuppressWarnings("unchecked")
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(LoginViewModel.class)) {
-            return (T) new LoginViewModel(AuthRepository.getInstance(new AuthDataSource()));
+            return (T) new LoginViewModel(AuthRepository.getInstance(new FirebaseDataSource()));
         } else {
             throw new IllegalArgumentException("Unknown ViewModel class");
         }
