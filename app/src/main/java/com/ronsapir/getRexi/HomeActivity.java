@@ -1,6 +1,9 @@
 package com.ronsapir.getRexi;
 
+import static android.net.Uri.*;
+
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -73,6 +76,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         email.setText(user.getEmail());
         img.setImageURI(user.getPhotoUrl());
     }
+
 
 
     @Override

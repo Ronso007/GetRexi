@@ -8,6 +8,7 @@
     <string name="prompt_password">Password</string>
     <string name="prompt_name">Name</string>
     <string name="action_sign_in">Next</string>
+    <string name="action_update_account">Update</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome!"</string>
     <string name="invalid_email">Not a valid email</string>

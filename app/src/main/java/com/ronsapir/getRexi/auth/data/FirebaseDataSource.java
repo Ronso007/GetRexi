@@ -129,6 +129,7 @@ public class FirebaseDataSource {
                                     Model.instance().uploadImage(user.getUid(), bitmap, url->{
                                         if (url != null){
                                             userDB.setImageUrl(url);
+                                            updateUserPhoto(user,url);
                                         }
                                         Model.instance().addUser(userDB, data -> {
                                             registerResult.setValue(new RegisterResult(new LoggedInUserView(name)));
@@ -150,6 +151,28 @@ public class FirebaseDataSource {
         }
     }
 
+    private void updateUserPhoto(FirebaseUser user, String url) {
+        try{
+            Uri photoUri = Uri.parse(url);
+            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                    .setPhotoUri(photoUri)
+                    .build();
+
+            user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Log.d(Tag, "User profile updated.");
+                    } else {
+                        Log.d(Tag, "User profile NOT updated.");
+                    }
+                }
+            });
+        } catch (Exception e) {
+            Log.w(Tag, "updateProfile:failure", e);
+        }
+    }
     public boolean isLoggedIn() {
         return mAuth.getCurrentUser() != null;
     }
