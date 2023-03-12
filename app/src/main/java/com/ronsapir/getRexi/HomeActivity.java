@@ -7,7 +7,9 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
@@ -35,22 +37,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setSupportActionBar(binding.appBarMain.toolbar);
+        Toolbar toolbar = binding.appBarMain.toolbar;
+        setSupportActionBar(toolbar);
 
         drawer = binding.drawerLayout;
-        NavigationView navigationView = binding.navigationDrawer;
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        navigationView.setNavigationItemSelectedListener(this);
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_settings)
-                .setOpenableLayout(drawer)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        //NavigationUI.setupWithNavController(navigationView, navController);
-        navigationView.bringToFront();
 
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar,R.string.nav_open,R.string.nav_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
