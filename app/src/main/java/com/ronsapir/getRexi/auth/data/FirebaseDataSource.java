@@ -173,6 +173,38 @@ public class FirebaseDataSource {
             Log.w(Tag, "updateProfile:failure", e);
         }
     }
+
+    public void UpdateUsernameAndPhoto(FirebaseUser user,String username, String url, Model.Listener<Void> listener) {
+        try{
+            UserProfileChangeRequest profileUpdates;
+            if (url != null) {
+                Uri photoUri = Uri.parse(url);
+                profileUpdates = new UserProfileChangeRequest.Builder()
+                        .setPhotoUri(photoUri).
+                        setDisplayName(username)
+                        .build();
+            } else {
+                profileUpdates = new UserProfileChangeRequest.Builder()
+                        .setDisplayName(username)
+                        .build();
+            }
+
+            user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Log.d(Tag, "User profile updated.");
+                        listener.onComplete(null);
+                    } else {
+                        Log.d(Tag, "User profile NOT updated.");
+                    }
+                }
+            });
+        } catch (Exception e) {
+            Log.w(Tag, "updateProfile:failure", e);
+        }
+    }
     public boolean isLoggedIn() {
         return mAuth.getCurrentUser() != null;
     }

@@ -28,6 +28,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ronsapir.getRexi.databinding.ActivityHomeBinding;
 import com.ronsapir.getRexi.databinding.SideNavHeaderBinding;
+import com.squareup.picasso.Picasso;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -67,17 +68,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    private void populateHeaderView(View headerView) {
+    public void populateHeaderView(View headerView) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         TextView name = headerView.findViewById(R.id.name);
         TextView email = headerView.findViewById(R.id.email);
         ImageView img = headerView.findViewById(R.id.profileView);
         name.setText(user.getDisplayName());
         email.setText(user.getEmail());
-        img.setImageURI(user.getPhotoUrl());
+        Picasso.get().load(user.getPhotoUrl()).into(img);
     }
-
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

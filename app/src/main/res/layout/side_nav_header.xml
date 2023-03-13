@@ -16,8 +16,8 @@
         android:paddingTop="8dp"
         android:maxHeight="100dp"
         android:maxWidth="100dp"
-        tools:srcCompat="@tools:sample/avatars"
-        android:adjustViewBounds="true" />
+        android:adjustViewBounds="true"
+        android:src="@drawable/dog_solid"/>
 
     <TextView
         android:id="@+id/name"

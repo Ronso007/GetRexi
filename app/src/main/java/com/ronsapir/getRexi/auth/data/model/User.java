@@ -12,27 +12,28 @@ public class User {
     public static final String COLLECTION = "users";
     private static final String ID = "id";
     private static final String PHONE_NUMBER = "phoneNumber";
-    private static final String IS_VERIFIED = "isVerified";
+    private static final String HAS_VERIFIED = "hasVerified";
     private static final String IMAGE_URL = "imageUrl";
 
     @PrimaryKey
     @NonNull
     private String id;
     private String phoneNumber;
-    private boolean isVerified;
+    private boolean hasVerified;
     private String imageUrl;
 
-    public User(@NonNull String id, String phoneNumber, boolean isVerified, String imageUrl) {
+    public User() {}
+    public User(@NonNull String id, String phoneNumber, boolean hasVerified, String imageUrl) {
         this.id = id;
         this.phoneNumber = phoneNumber;
-        this.isVerified = isVerified;
+        this.hasVerified = hasVerified;
         this.imageUrl = imageUrl;
     }
 
-    public User(String id, String phoneNumber, boolean isVerified) {
+    public User(String id, String phoneNumber, boolean hasVerified) {
         this.id = id;
         this.phoneNumber = phoneNumber;
-        this.isVerified = isVerified;
+        this.hasVerified = hasVerified;
     }
 
     @NonNull
@@ -52,12 +53,12 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public boolean isVerified() {
-        return isVerified;
+    public boolean isHasVerified() {
+        return hasVerified;
     }
 
-    public void setVerified(boolean verified) {
-        isVerified = verified;
+    public void setHasVerified(boolean hasVerified) {
+        this.hasVerified = hasVerified;
     }
 
     public String getImageUrl() {
@@ -71,7 +72,7 @@ public class User {
     public static User fromJson(Map<String, Object> json) {
         String id = (String)json.get(ID);
         String phoneNumber = (String)json.get(PHONE_NUMBER);
-        boolean isVerified = (boolean)json.get(IS_VERIFIED);
+        boolean isVerified = (boolean)json.get(HAS_VERIFIED);
 
         User user = new User(id,phoneNumber, isVerified);
 
@@ -83,7 +84,7 @@ public class User {
 
         json.put(ID, getId());
         json.put(PHONE_NUMBER, getPhoneNumber());
-        json.put(IS_VERIFIED, isVerified());
+        json.put(HAS_VERIFIED, isHasVerified());
         json.put(IMAGE_URL, getImageUrl());
 
         return json;

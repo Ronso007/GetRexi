@@ -48,11 +48,11 @@ public class RegisterViewModel extends ViewModel {
         }
     }
 
-    private boolean isPhoneValid(String phone) {
-        return phone != null && phone.trim().length() >= 9 && phone.trim().length() <= 10;
+    public static boolean isPhoneValid(String phone) {
+        return phone != null && phone.matches("[0-9]+") && phone.trim().length() >= 9 && phone.trim().length() <= 10;
     }
 
-    private boolean isNameValid(String name) {
+    public static boolean isNameValid(String name) {
         return name != null && name.trim().length() > 3;
     }
 
@@ -69,7 +69,7 @@ public class RegisterViewModel extends ViewModel {
     }
 
     // A placeholder password validation check
-    private boolean isPasswordValid(String password) {
+    public static boolean isPasswordValid(String password) {
         return password != null && password.trim().length() > 5;
     }
 }
