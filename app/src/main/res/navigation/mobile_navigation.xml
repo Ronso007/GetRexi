@@ -3,23 +3,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_adopt">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.ronsapir.getRexi.ui.home.HomeFragment"
+        android:id="@+id/navigation_adopt"
+        android:name="com.ronsapir.getRexi.ui.Adopt.AdoptFragment"
         android:label="@string/title_adopt"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_adopt" >
+        <action
+            android:id="@+id/action_navigation_adopt_to_addDogFragment"
+            app:destination="@id/addDogFragment" />
+    </fragment>
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.ronsapir.getRexi.ui.dashboard.DashboardFragment"
-        android:label="@string/title_create"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_my_pets"
+        android:name="com.ronsapir.getRexi.ui.MyPets.MyPetsFragment"
+        android:label="@string/title_my_pets"
+        tools:layout="@layout/fragment_my_pets" >
+        <action
+            android:id="@+id/action_navigation_my_pets_to_addDogFragment"
+            app:destination="@id/addDogFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_settings"
         android:name="com.ronsapir.getRexi.ui.settings.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/addDogFragment"
+        android:name="com.ronsapir.getRexi.auth.data.AddOrEditDogFragment"
+        android:label="@string/add_dog"
+        tools:layout="@layout/fragment_add_or_edit_dog">
+
+    </fragment>
 </navigation>

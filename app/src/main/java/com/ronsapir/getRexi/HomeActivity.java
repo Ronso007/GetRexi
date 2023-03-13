@@ -1,9 +1,6 @@
 package com.ronsapir.getRexi;
 
-import static android.net.Uri.*;
-
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -27,7 +24,6 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ronsapir.getRexi.databinding.ActivityHomeBinding;
-import com.ronsapir.getRexi.databinding.SideNavHeaderBinding;
 import com.squareup.picasso.Picasso;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -60,7 +56,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_settings)
+                R.id.navigation_adopt, R.id.navigation_my_pets, R.id.navigation_settings)
                 .build();
         NavController navControllerBottom = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);

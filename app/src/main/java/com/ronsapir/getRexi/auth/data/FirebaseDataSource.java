@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,10 +21,12 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.ronsapir.getRexi.R;
+import com.ronsapir.getRexi.auth.data.model.Dog;
 import com.ronsapir.getRexi.auth.data.model.LoggedInUser;
 import com.ronsapir.getRexi.auth.data.model.Model;
 import com.ronsapir.getRexi.auth.data.model.User;
@@ -33,6 +36,8 @@ import com.ronsapir.getRexi.auth.ui.register.RegisterResult;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.
@@ -251,6 +256,36 @@ public class FirebaseDataSource {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         User user = documentSnapshot.toObject(User.class);
                         callback.onComplete(user);
+                    }
+                });
+    }
+
+    public void getAllDogsSince(Long since, Model.Listener<List<Dog>> callback){
+        db.collection(Dog.COLLECTION)
+                .whereGreaterThanOrEqualTo(Dog.LAST_UPDATED, new Timestamp(since,0))
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        List<Dog> list = new LinkedList<>();
+                        if (task.isSuccessful()){
+                            QuerySnapshot jsonsList = task.getResult();
+                            for (DocumentSnapshot json: jsonsList){
+                                Dog dog = Dog.fromJson(json.getData());
+                                list.add(dog);
+                            }
+                        }
+                        callback.onComplete(list);
+                    }
+                });
+    }
+
+    public void addDog(Dog dog, Model.Listener<Void> listener) {
+        db.collection(Dog.COLLECTION).document(dog.getName()).set(dog.toJson())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        listener.onComplete(null);
                     }
                 });
     }

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Get Rexi</string>
     <string name="title_adopt">Adopt</string>
-    <string name="title_create">Create</string>
+    <string name="title_my_pets">My Pets</string>
     <string name="title_settings">Settings</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -56,5 +56,12 @@
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>
     <string name="promt_phone">Phone</string>
+    <string name="dogNameLabel">Dog Name</string>
+    <string name="prompt_dogName">Dog Name</string>
+    <string name="dogAgeLabel">Age</string>
+    <string name="prompt_dogAge">Age</string>
+    <string name="dogBreedLabel">Breed</string>
+    <string name="prompt_dogBreed">Breed</string>
+    <string name="add_dog">Add Dog</string>
 
 </resources>

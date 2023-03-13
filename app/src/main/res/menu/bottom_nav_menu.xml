@@ -2,18 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_home"
+        android:id="@+id/navigation_adopt"
         android:icon="@drawable/dog_solid"
         android:title="@string/title_adopt" />
 
     <item
-        android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/plus_solid"
-        android:title="@string/title_create" />
+        android:id="@+id/navigation_my_pets"
+        android:icon="@drawable/paw_solid"
+        android:title="@string/title_my_pets" />
 
     <item
         android:id="@+id/navigation_settings"
         android:icon="@drawable/nav_settings"
         android:title="@string/title_settings" />
-
 </menu>
