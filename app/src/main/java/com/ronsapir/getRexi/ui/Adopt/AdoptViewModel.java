@@ -4,16 +4,16 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.ronsapir.getRexi.auth.data.model.Dog;
+import com.ronsapir.getRexi.auth.data.model.Model;
+
+import java.util.List;
+
 public class AdoptViewModel extends ViewModel {
 
-    private final MutableLiveData<String> mText;
+    private LiveData<List<Dog>> data = Model.instance().getAllDogs();
 
-    public AdoptViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
-    }
-
-    public LiveData<String> getText() {
-        return mText;
+    LiveData<List<Dog>> getData() {
+        return data;
     }
 }

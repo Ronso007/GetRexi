@@ -48,13 +48,6 @@ public class AddOrEditDogFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static AddOrEditDogFragment newInstance() {
-        AddOrEditDogFragment fragment = new AddOrEditDogFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,10 +122,10 @@ public class AddOrEditDogFragment extends Fragment {
     private void setFields() {
         Bundle bundle = getArguments();
 
-        if (bundle.get("dog") != null) {
-            Dog dog = (Dog) bundle.get("dog");
+        if (bundle.get("Dog") != null) {
+            Dog dog = (Dog) bundle.get("Dog");
             binding.dogName.setText(dog.getName());
-            binding.dogAge.setText(dog.getAge());
+            binding.dogAge.setText(Integer.toString(dog.getAge()));
             binding.dogBreed.setText(dog.getBreed());
 
             if (!Objects.equals(dog.getImageUrl(), ""))
@@ -164,9 +157,9 @@ public class AddOrEditDogFragment extends Fragment {
             }
 
             Bundle bundle = getArguments();
-            if (bundle.get("book") != null) {
-                Dog book = (Dog) bundle.get("book");
-                dogToSave.setImageUrl(book.getImageUrl());
+            if (bundle.get("Dog") != null) {
+                Dog dog = (Dog) bundle.get("Dog");
+                dogToSave.setImageUrl(dog.getImageUrl());
             }
 
             if (isImageSelected) {

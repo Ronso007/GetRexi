@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_navigation_adopt_to_addDogFragment"
             app:destination="@id/addDogFragment" />
+        <action
+            android:id="@+id/action_navigation_adopt_to_dogDetailsFragment"
+            app:destination="@id/dogDetailsFragment" />
     </fragment>
 
     <fragment
@@ -23,8 +26,20 @@
         <action
             android:id="@+id/action_navigation_my_pets_to_addDogFragment"
             app:destination="@id/addDogFragment" />
+        <action
+            android:id="@+id/action_navigation_my_pets_to_dogDetailsFragment"
+            app:destination="@id/dogDetailsFragment" />
     </fragment>
 
+    <fragment
+        android:id="@+id/dogDetailsFragment"
+        android:name="com.ronsapir.getRexi.auth.data.DogDetailsFragment"
+        android:label="Dog Details"
+        tools:layout="@layout/fragment_dog_details">
+        <argument
+            android:name="Dog"
+            app:argType="com.ronsapir.getRexi.auth.data.model.Dog" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_settings"
         android:name="com.ronsapir.getRexi.ui.settings.SettingsFragment"
@@ -36,6 +51,12 @@
         android:name="com.ronsapir.getRexi.auth.data.AddOrEditDogFragment"
         android:label="@string/add_dog"
         tools:layout="@layout/fragment_add_or_edit_dog">
-
+        <argument
+            android:name="Dog"
+            app:argType="com.ronsapir.getRexi.auth.data.model.Dog"
+            app:nullable="true" />
+        <argument
+            android:name="title"
+            app:argType="string"/>
     </fragment>
 </navigation>

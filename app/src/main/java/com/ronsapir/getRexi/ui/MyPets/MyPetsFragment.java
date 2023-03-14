@@ -42,7 +42,7 @@ public class MyPetsFragment extends Fragment {
         });
 
         View addButton = root.findViewById(R.id.addBtn);
-        NavDirections action =  MyPetsFragmentDirections.actionNavigationMyPetsToAddDogFragment();//(null, "Add Dog")
+        NavDirections action =  MyPetsFragmentDirections.actionNavigationMyPetsToAddDogFragment(null, "Add Dog");
         addButton.setOnClickListener(Navigation.createNavigateOnClickListener(action));
 
         binding.myPostsProgressBar.setVisibility(View.GONE);
