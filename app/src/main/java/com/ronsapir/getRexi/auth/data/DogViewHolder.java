@@ -70,10 +70,10 @@ public class DogViewHolder extends RecyclerView.ViewHolder {
                 editButton.setVisibility(View.VISIBLE);
 
                 if (Objects.equals(sourceFrag, "MyPosts")) {
-                    NavDirections action1 = com.ronsapir.getRexi.ui.MyPets.MyPetsFragmentDirections.actionNavigationMyPetsToAddDogFragment(dog, "Edit Dog");
+                    NavDirections action1 = (NavDirections) MyPetsFragmentDirections.actionNavigationMyPetsToAddDogFragment(dog, "Edit Dog");
                     editButton.setOnClickListener(Navigation.createNavigateOnClickListener(action1));
                 } else {
-                    NavDirections action2 = com.ronsapir.getRexi.ui.Adopt.AdoptFragmentDirections.actionNavigationAdoptToAddDogFragment(dog, "Edit Dog");
+                    NavDirections action2 = (NavDirections) AdoptFragmentDirections.actionNavigationAdoptToAddDogFragment(dog, "Edit Dog");
                     editButton.setOnClickListener(Navigation.createNavigateOnClickListener(action2));
                 }
             }
