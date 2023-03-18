@@ -16,7 +16,6 @@
         android:textSize="34sp"
         app:fontFamily="@font/comfortaa"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.093"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,9 +40,11 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="24dp"
+        android:backgroundTint="#000000"
         android:hint="@string/prompt_email"
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true"
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,9 +70,11 @@
         android:layout_height="48dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="2dp"
+        android:backgroundTint="#000000"
         android:hint="@string/prompt_password"
         android:imeOptions="actionDone"
         android:inputType="textPassword"
+        android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordLabel" />
 
@@ -83,11 +86,16 @@
         android:layout_marginStart="48dp"
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="32dp"
+        android:background="@color/colorControlActivated"
+        android:backgroundTint="@color/grey"
         android:enabled="false"
         android:text="@string/action_sign_in"
+        android:textColor="@color/grey"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password" />
 
     <ProgressBar
         android:id="@+id/loading"

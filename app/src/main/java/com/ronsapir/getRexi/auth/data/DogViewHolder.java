@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ronsapir.getRexi.auth.data.model.Dog;
 import com.ronsapir.getRexi.databinding.DogListRowBinding;
+import com.ronsapir.getRexi.ui.Adopt.AdoptFragmentDirections;
 import com.ronsapir.getRexi.ui.MyPets.MyPetsFragmentDirections;
 import com.squareup.picasso.Picasso;
 
@@ -71,10 +72,10 @@ public class DogViewHolder extends RecyclerView.ViewHolder {
                 if (Objects.equals(sourceFrag, "MyPosts")) {
                     NavDirections action1 = com.ronsapir.getRexi.ui.MyPets.MyPetsFragmentDirections.actionNavigationMyPetsToAddDogFragment(dog, "Edit Dog");
                     editButton.setOnClickListener(Navigation.createNavigateOnClickListener(action1));
-                } /*else {
-                    NavDirections action2 = BooksListFragmentDirections.actionBooksListFragmentToAddBookFragment(dog, "Edit Dog");
+                } else {
+                    NavDirections action2 = com.ronsapir.getRexi.ui.Adopt.AdoptFragmentDirections.actionNavigationAdoptToAddDogFragment(dog, "Edit Dog");
                     editButton.setOnClickListener(Navigation.createNavigateOnClickListener(action2));
-                }*/
+                }
             }
         });
     }
