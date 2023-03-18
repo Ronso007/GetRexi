@@ -17,13 +17,20 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Lifecycle;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ronsapir.getRexi.R;
 import com.ronsapir.getRexi.auth.data.model.Dog;
@@ -31,6 +38,11 @@ import com.ronsapir.getRexi.auth.data.model.Model;
 import com.ronsapir.getRexi.databinding.FragmentAddOrEditDogBinding;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -117,6 +129,9 @@ public class AddOrEditDogFragment extends Fragment {
         setCameraButtonActionListener();
         setGalleryButtonActionListener();
 
+        Spinner dogBreed = view.findViewById(R.id.dogBreed);
+        getOptionsFromApi(dogBreed);
+
         return view;
     }
 
@@ -127,7 +142,7 @@ public class AddOrEditDogFragment extends Fragment {
             Dog dog = (Dog) bundle.get("Dog");
             binding.dogName.setText(dog.getName());
             binding.dogAge.setText(Integer.toString(dog.getAge()));
-            binding.dogBreed.setText(dog.getBreed());
+            binding.dogBreed.setPrompt(dog.getBreed());
 
             if (!Objects.equals(dog.getImageUrl(), ""))
             {
@@ -136,12 +151,38 @@ public class AddOrEditDogFragment extends Fragment {
         }
     }
 
+    private void getOptionsFromApi(Spinner dogBreed ) {
+        String url = "https://api.thedogapi.com/v1/breeds";
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                response -> {
+                    List<String> optionsList = new ArrayList<>();
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            JSONObject jsonObject = response.getJSONObject(i);
+                            String option = jsonObject.getString("name");
+                            optionsList.add(option);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    // Populate the options in the dropdown
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, optionsList);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    dogBreed.setAdapter(adapter);
+                },
+                error ->  Log.e("error", error.getMessage()));
+
+        // Add the request to the Volley request queue
+        Volley.newRequestQueue(getContext()).add(jsonArrayRequest);
+    }
+
+
     private void setSaveButtonActionListener() {
         binding.saveBtn.setOnClickListener(view1 -> {
             String dogName = binding.dogName.getText().toString();
             String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
             int dogAge = parseInt(binding.dogAge.getText().toString());
-            String dogBreed = binding.dogBreed.getText().toString();
+            String dogBreed = binding.dogBreed.getPrompt().toString();
             String imageUrl = "";
 
             Dog dogToSave = new Dog(dogName, dogBreed, dogAge, imageUrl, "", userId);
