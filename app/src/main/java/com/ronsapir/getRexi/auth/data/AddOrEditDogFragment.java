@@ -43,6 +43,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -133,7 +134,11 @@ public class AddOrEditDogFragment extends Fragment {
         setGalleryButtonActionListener();
 
         Spinner dogBreed = view.findViewById(R.id.dogBreed);
-        getOptionsFromApi(dogBreed);
+        DogApi.instance().getBreedOptions(optionsList -> {
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, optionsList);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            dogBreed.setAdapter(adapter);
+        });
 
         return view;
     }
@@ -154,97 +159,6 @@ public class AddOrEditDogFragment extends Fragment {
         }
     }
 
-    private void getOptionsFromApi(Spinner dogBreed ) {
-        String url = "https://api.thedogapi.com/v1/breeds";
-        String apiKey = "live_SrBT4v5Y02emFdlSrLKr7t12AQ8uomXOIx4poV3J4OJQZh9rKg17P5kuiCFCCena";
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
-                response -> {
-                    List<String> optionsList = new ArrayList<>();
-                    for (int i = 0; i < response.length(); i++) {
-                        try {
-                            JSONObject jsonObject = response.getJSONObject(i);
-                            String option = jsonObject.getString("name");
-                            optionsList.add(option);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    // Populate the options in the dropdown
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, optionsList);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    dogBreed.setAdapter(adapter);
-                },
-                error ->  Log.e("error", error.getMessage())
-        ){
-                // Override the getHeaders() method to add the API key header
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String, String> headers = new HashMap<>();
-                    headers.put("x-api-key", apiKey);
-                    return headers;
-                }
-            };
-
-        // Add the request to the Volley request queue
-        Volley.newRequestQueue(getContext()).add(jsonArrayRequest);
-    }
-
-    private void setDogTemperament(Dog dogToSave) {
-        String url = "https://api.thedogapi.com/v1/breeds/search?name=" + dogToSave.getBreed();
-        String apiKey = "live_SrBT4v5Y02emFdlSrLKr7t12AQ8uomXOIx4poV3J4OJQZh9rKg17P5kuiCFCCena";
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
-                response -> {
-                    try {
-                        JSONObject jsonObject = response.getJSONObject(0);
-                        String temperament = jsonObject.getString("temperament");
-                        dogToSave.setTemperament(temperament);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                },
-                error -> Log.e("error", error.getMessage())
-        ) {
-            // Override the getHeaders() method to add the API key header
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("x-api-key", apiKey);
-                return headers;
-            }
-        };
-
-        // Add the request to the request queue
-        Volley.newRequestQueue(getContext()).add(jsonArrayRequest);
-    }
-
-    private void setDogLifeSpan(Dog dogToSave) {
-        String url = "https://api.thedogapi.com/v1/breeds/search?name=" + dogToSave.getBreed();
-        String apiKey = "live_SrBT4v5Y02emFdlSrLKr7t12AQ8uomXOIx4poV3J4OJQZh9rKg17P5kuiCFCCena";
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
-                response -> {
-                    try {
-                        JSONObject jsonObject = response.getJSONObject(0);
-                        String lifeSpan = jsonObject.getString("life_span");
-                        dogToSave.setLifeSpan(lifeSpan);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                },
-                error -> Log.e("error", error.getMessage())
-        ) {
-            // Override the getHeaders() method to add the API key header
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("x-api-key", apiKey);
-                return headers;
-            }
-        };
-
-        // Add the request to the request queue
-        Volley.newRequestQueue(getContext()).add(jsonArrayRequest);
-    }
-
     private void setSaveButtonActionListener() {
         binding.saveBtn.setOnClickListener(view1 -> {
             String dogName = binding.dogName.getText().toString();
@@ -254,8 +168,10 @@ public class AddOrEditDogFragment extends Fragment {
             String imageUrl = "";
 
             Dog dogToSave = new Dog(dogName, dogBreed, dogAge, imageUrl, "", userId, "");
-            setDogTemperament(dogToSave);
-            setDogLifeSpan(dogToSave);
+
+            DogApi.instance().getDogTemperament(dogBreed, dogToSave::setTemperament);
+
+            DogApi.instance().getLifeSpan(dogBreed, dogToSave::setLifeSpan);
 
             Bundle bundle = getArguments();
             if (bundle.get("Dog") != null) {
