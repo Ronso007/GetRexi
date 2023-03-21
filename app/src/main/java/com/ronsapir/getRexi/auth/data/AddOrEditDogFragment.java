@@ -47,7 +47,7 @@ import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AddOrEditDogFragment#newInstance} factory method to
+ * Use the {@link AddOrEditDogFragment} factory method to
  * create an instance of this fragment.
  */
 public class AddOrEditDogFragment extends Fragment {
@@ -176,27 +176,36 @@ public class AddOrEditDogFragment extends Fragment {
         Volley.newRequestQueue(getContext()).add(jsonArrayRequest);
     }
 
+    private void setDogTemperament(Dog dogToSave) {
+        //String url = "https://api.thedogapi.com/v1/breeds/search?name=Affenpinscher";
+        String url = "https://api.thedogapi.com/v1/breeds/search?name=" + dogToSave.getBreed();
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                response -> {
+                    try {
+                        JSONObject jsonObject = response.getJSONObject(0);
+                        String temperament = jsonObject.getString("temperament");
+                        System.out.println("1111111111111");
+                        System.out.println(temperament);
+                        dogToSave.setTemperament((temperament));                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error ->  Log.e("error", error.getMessage()));
+
+        // Add the request to the request queue
+        Volley.newRequestQueue(getContext()).add(jsonArrayRequest);
+    }
 
     private void setSaveButtonActionListener() {
         binding.saveBtn.setOnClickListener(view1 -> {
             String dogName = binding.dogName.getText().toString();
             String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
             int dogAge = parseInt(binding.dogAge.getText().toString());
-            String dogBreed = binding.dogBreed.getPrompt().toString();
+            String dogBreed = binding.dogBreed.getSelectedItem().toString();
             String imageUrl = "";
 
             Dog dogToSave = new Dog(dogName, dogBreed, dogAge, imageUrl, "", userId);
-
-            // TODO: Add API Call, remove thread.sleep
-            /*DogBreedApi.instance().getDogBreedWikiPageByName(name, wikiPage -> {
-                dogToSave.setWikipediaUrl(wikiPage);
-            });*/
-
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            setDogTemperament(dogToSave);
 
             Bundle bundle = getArguments();
             if (bundle.get("Dog") != null) {
