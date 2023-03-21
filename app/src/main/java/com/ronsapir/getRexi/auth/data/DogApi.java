@@ -54,8 +54,7 @@ public class DogApi {
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
                     try {
-                        JSONObject json = new JSONObject(response.body().string());
-                        JSONArray results = json.getJSONArray("");
+                        JSONArray results = new JSONArray(response.body().string());
                         List<String> optionsList = new ArrayList<>();
                         for (int i = 0; i < results.length(); i++) {
                             try {
