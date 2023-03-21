@@ -142,7 +142,12 @@
                 android:id="@+id/dogBreed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:minHeight="32dp"
                 android:entries="@array/options"
+                android:background="#DCD6D6"
                 android:prompt="@string/prompt" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
