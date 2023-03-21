@@ -27,8 +27,7 @@ import okhttp3.Response;
 public class DogApi {
     private static final DogApi instance = new DogApi();
     private OkHttpClient client;
-    private String summary = "";
-    private String apiKey = "live_SrBT4v5Y02emFdlSrLKr7t12AQ8uomXOIx4poV3J4OJQZh9rKg17P5kuiCFCCena";
+    private final String apiKey = "live_SrBT4v5Y02emFdlSrLKr7t12AQ8uomXOIx4poV3J4OJQZh9rKg17P5kuiCFCCena";
 
     private DogApi() {
         client = new OkHttpClient();
@@ -54,7 +53,8 @@ public class DogApi {
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
                     try {
-                        JSONArray results = new JSONArray(response.body().string());
+                        JSONObject responseObject = new JSONObject(response.body().string());
+                        JSONArray results = responseObject.getJSONArray("results");
                         List<String> optionsList = new ArrayList<>();
                         for (int i = 0; i < results.length(); i++) {
                             try {
