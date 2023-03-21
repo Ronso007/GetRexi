@@ -28,6 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
@@ -42,7 +43,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -153,6 +156,7 @@ public class AddOrEditDogFragment extends Fragment {
 
     private void getOptionsFromApi(Spinner dogBreed ) {
         String url = "https://api.thedogapi.com/v1/breeds";
+        String apiKey = "live_SrBT4v5Y02emFdlSrLKr7t12AQ8uomXOIx4poV3J4OJQZh9rKg17P5kuiCFCCena";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 response -> {
                     List<String> optionsList = new ArrayList<>();
@@ -170,27 +174,45 @@ public class AddOrEditDogFragment extends Fragment {
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     dogBreed.setAdapter(adapter);
                 },
-                error ->  Log.e("error", error.getMessage()));
+                error ->  Log.e("error", error.getMessage())
+        ){
+                // Override the getHeaders() method to add the API key header
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("x-api-key", apiKey);
+                    return headers;
+                }
+            };
 
         // Add the request to the Volley request queue
         Volley.newRequestQueue(getContext()).add(jsonArrayRequest);
     }
 
     private void setDogTemperament(Dog dogToSave) {
-        //String url = "https://api.thedogapi.com/v1/breeds/search?name=Affenpinscher";
         String url = "https://api.thedogapi.com/v1/breeds/search?name=" + dogToSave.getBreed();
+        String apiKey = "live_SrBT4v5Y02emFdlSrLKr7t12AQ8uomXOIx4poV3J4OJQZh9rKg17P5kuiCFCCena";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 response -> {
                     try {
                         JSONObject jsonObject = response.getJSONObject(0);
                         String temperament = jsonObject.getString("temperament");
-                        System.out.println("1111111111111");
-                        System.out.println(temperament);
-                        dogToSave.setTemperament((temperament));                    } catch (JSONException e) {
+                        dogToSave.setTemperament(temperament);
+                    } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 },
-                error ->  Log.e("error", error.getMessage()));
+                error -> Log.e("error", error.getMessage())
+        ) {
+            // Override the getHeaders() method to add the API key header
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("x-api-key", apiKey);
+                return headers;
+            }
+        };
+
 
         // Add the request to the request queue
         Volley.newRequestQueue(getContext()).add(jsonArrayRequest);
