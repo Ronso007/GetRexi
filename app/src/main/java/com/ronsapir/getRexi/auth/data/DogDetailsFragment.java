@@ -47,7 +47,7 @@ public class DogDetailsFragment extends Fragment {
             binding.name.setText(dog.getName());
             binding.dogAge.setText(Integer.toString(dog.getAge()));
             binding.dogBreed.setText(dog.getBreed());
-            binding.BreedInfo.setText("TODO:INSERT INFO");
+            binding.LifeSpan.setText(dog.getLifeSpan());
             binding.temperament.setText(dog.getTemperament());
 
             if (dog.getPhoto() != null) {

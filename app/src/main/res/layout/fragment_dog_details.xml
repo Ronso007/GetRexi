@@ -138,14 +138,14 @@
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
                     <androidx.appcompat.widget.LinearLayoutCompat
-                        android:id="@+id/BreedInfoLayout"
+                        android:id="@+id/LifeSpanLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:minHeight="40dp"
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/BreedInfoTitle"
+                            android:id="@+id/LifeSpanTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
@@ -158,12 +158,12 @@
                             tools:layout_editor_absoluteY="48dp" />
 
                         <TextView
-                            android:id="@+id/BreedInfo"
+                            android:id="@+id/LifeSpan"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginTop="10dp"
-                            android:text="BreedInfo"
+                            android:text="LifeSpan"
                             app:fontFamily="@font/comfortaa"
                             android:textColor="@color/black"
                             android:textSize="18sp"

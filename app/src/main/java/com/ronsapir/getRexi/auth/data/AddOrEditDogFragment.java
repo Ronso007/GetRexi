@@ -213,6 +213,33 @@ public class AddOrEditDogFragment extends Fragment {
             }
         };
 
+        // Add the request to the request queue
+        Volley.newRequestQueue(getContext()).add(jsonArrayRequest);
+    }
+
+    private void setDogLifeSpan(Dog dogToSave) {
+        String url = "https://api.thedogapi.com/v1/breeds/search?name=" + dogToSave.getBreed();
+        String apiKey = "live_SrBT4v5Y02emFdlSrLKr7t12AQ8uomXOIx4poV3J4OJQZh9rKg17P5kuiCFCCena";
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                response -> {
+                    try {
+                        JSONObject jsonObject = response.getJSONObject(0);
+                        String lifeSpan = jsonObject.getString("life_span");
+                        dogToSave.setLifeSpan(lifeSpan);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> Log.e("error", error.getMessage())
+        ) {
+            // Override the getHeaders() method to add the API key header
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("x-api-key", apiKey);
+                return headers;
+            }
+        };
 
         // Add the request to the request queue
         Volley.newRequestQueue(getContext()).add(jsonArrayRequest);
@@ -226,8 +253,9 @@ public class AddOrEditDogFragment extends Fragment {
             String dogBreed = binding.dogBreed.getSelectedItem().toString();
             String imageUrl = "";
 
-            Dog dogToSave = new Dog(dogName, dogBreed, dogAge, imageUrl, "", userId);
+            Dog dogToSave = new Dog(dogName, dogBreed, dogAge, imageUrl, "", userId, "");
             setDogTemperament(dogToSave);
+            setDogLifeSpan(dogToSave);
 
             Bundle bundle = getArguments();
             if (bundle.get("Dog") != null) {
