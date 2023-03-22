@@ -3,7 +3,7 @@ package com.ronsapir.getRexi.auth.data.model;
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {Dog.class}, version = 5)
+@Database(entities = {Dog.class}, version = 6)
 public abstract class AppLocalDbRepository extends RoomDatabase {
     public abstract DogDao dogDao();
 }

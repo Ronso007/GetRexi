@@ -63,5 +63,6 @@
     <string name="dogBreedLabel">Breed</string>
     <string name="prompt_dogBreed">Breed</string>
     <string name="add_dog">Add Dog</string>
+    <string name="prompt">Select an option</string>
 
 </resources>

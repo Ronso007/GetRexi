@@ -23,7 +23,8 @@ public class Dog implements Serializable {
     private static final String BREED = "breed";
     private static final String AGE = "age";
     private static final String IMAGE_URL = "imageUrl";
-    private static final String WIKIPEDIA_URL = "wikipediaURL";
+    private static final String TEMPERAMENT = "temperament";
+    private static final String LIFE_SPAN = "lifeSpan";
     private static final String USER_ID = "userId";
     public static final String COLLECTION = "dogs";
     public static final String LAST_UPDATED = "lastUpdated";
@@ -35,22 +36,24 @@ public class Dog implements Serializable {
     private String breed;
     private int age;
     private String imageUrl;
-    private String wikipediaUrl;
+    private String temperament;
     private String userId;
     public Long lastUpdated;
+    public String lifeSpan;
 
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     public byte[] photo;
 
     public Dog() {}
 
-    public Dog(@NonNull String name, String breed, int age, String imageUrl, String wikipediaUrl, String userId) {
+    public Dog(@NonNull String name, String breed, int age, String imageUrl, String temperament, String userId, String lifeSpan) {
         this.name = name;
         this.breed = breed;
         this.age = age;
         this.imageUrl = imageUrl;
-        this.wikipediaUrl = wikipediaUrl;
+        this.temperament = temperament;
         this.userId = userId;
+        this.lifeSpan = lifeSpan;
     }
 
     @NonNull
@@ -86,12 +89,12 @@ public class Dog implements Serializable {
         this.imageUrl = imageUrl;
     }
 
-    public String getWikipediaUrl() {
-        return wikipediaUrl;
+    public String getTemperament() {
+        return temperament;
     }
 
-    public void setWikipediaUrl(String wikipediaUrl) {
-        this.wikipediaUrl = wikipediaUrl;
+    public void setTemperament(String temperament) {
+        this.temperament = temperament;
     }
 
     public String getUserId() {
@@ -130,15 +133,24 @@ public class Dog implements Serializable {
         editor.commit();
     }
 
+    public String getLifeSpan() {
+        return lifeSpan;
+    }
+
+    public void setLifeSpan(String lifeSpan) {
+        this.lifeSpan = lifeSpan;
+    }
+
     public static Dog fromJson(Map<String, Object> json) {
         String name = (String)json.get(NAME);
         String userId = (String)json.get(USER_ID);
         String breed = (String)json.get(BREED);
         int age = parseInt(json.get(AGE).toString());
         String imageUrl = (String)json.get(IMAGE_URL);
-        String wikipediaUrl = (String)json.get(WIKIPEDIA_URL);
+        String temperament = (String)json.get(TEMPERAMENT);
+        String lifeSpan = (String)json.get(LIFE_SPAN);
 
-        Dog dog = new Dog(name, breed, age, imageUrl,wikipediaUrl,userId);
+        Dog dog = new Dog(name, breed, age, imageUrl,temperament,userId, lifeSpan);
 
         try {
             Timestamp time = (Timestamp) json.get(LAST_UPDATED);
@@ -156,8 +168,9 @@ public class Dog implements Serializable {
         json.put(BREED, getBreed());
         json.put(AGE, getAge());
         json.put(IMAGE_URL, getImageUrl());
-        json.put(WIKIPEDIA_URL, getWikipediaUrl());
+        json.put(TEMPERAMENT, getTemperament());
         json.put(LAST_UPDATED, FieldValue.serverTimestamp());
+        json.put(LIFE_SPAN, getLifeSpan());
 
         return json;
     }
